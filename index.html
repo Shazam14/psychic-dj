@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SKMC Consulting — We show up when it matters.</title>
+  <meta name="description" content="SKMC Consulting. We've seen the problem before. Maybe not yours exactly. But close enough." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Barlow:wght@300;400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --void: #05060e;
+      --night: #080a18;
+      --pre-dawn: #1a1020;
+      --ember: #4a1e14;
+      --horizon: #b04825;
+      --solar: #e8843a;
+      --star-white: #e8e6ff;
+      --muted: rgba(200, 190, 220, 0.45);
+      --faint: rgba(180, 170, 200, 0.22);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Barlow', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--void);
+      color: var(--star-white);
+      font-family: var(--sans);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── CANVAS ── */
+    #canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+      animation: fadein 1.4s ease 0.6s forwards;
+    }
+
+    .nav-logo {
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .nav-link {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--faint);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-link:hover { color: var(--muted); }
+
+    /* ── SECTIONS ── */
+    section {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--sans);
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadein 1s ease 1s forwards;
+    }
+
+    .hero-headline {
+      font-family: var(--serif);
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--star-white);
+      letter-spacing: 0.01em;
+      max-width: 800px;
+      opacity: 0;
+      animation: risein 1.4s ease 1.2s forwards;
+    }
+
+    .hero-sub {
+      margin-top: 28px;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      opacity: 0;
+      animation: fadein 1s ease 1.8s forwards;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: fadein 1s ease 2.8s forwards;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, transparent, var(--faint));
+      animation: pulse-line 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse-line {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 0.7; transform: scaleY(1.1); }
+    }
+
+    .scroll-label {
+      font-size: 9px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, transparent, rgba(200,180,160,0.2), transparent);
+      margin: 0 auto;
+    }
+
+    /* ── CONTENT SECTIONS ── */
+    .content-section {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 100px 40px;
+    }
+
+    .section-num {
+      font-family: var(--sans);
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 48px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-num::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(200,180,160,0.1);
+    }
+
+    .section-headline {
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 300;
+      line-height: 1.25;
+      color: var(--star-white);
+      margin-bottom: 36px;
+      letter-spacing: 0.01em;
+    }
+
+    .section-headline em {
+      font-style: italic;
+      color: var(--muted);
+    }
+
+    .section-body {
+      font-size: 16px;
+      line-height: 1.85;
+      color: rgba(200, 192, 215, 0.6);
+      font-weight: 300;
+    }
+
+    .section-body p + p { margin-top: 20px; }
+
+    /* ── ETHOS CARDS ── */
+    .ethos-grid {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: rgba(200,180,160,0.08);
+      border: 1px solid rgba(200,180,160,0.08);
+    }
+
+    .ethos-card {
+      padding: 36px 32px;
+      background: rgba(6,7,15,0.6);
+    }
+
+    .ethos-card-label {
+      font-family: var(--sans);
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(230,160,80,0.5);
+      margin-bottom: 16px;
+    }
+
+    .ethos-card-text {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1.5;
+      color: rgba(220,210,235,0.7);
+    }
+
+    /* ── CONTACT ── */
+    #contact .content-section {
+      padding-bottom: 160px;
+    }
+
+    .contact-email {
+      display: inline-block;
+      margin-top: 40px;
+      font-family: var(--serif);
+      font-size: clamp(20px, 3vw, 32px);
+      font-weight: 300;
+      color: var(--star-white);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      position: relative;
+      transition: color 0.4s;
+    }
+
+    .contact-email::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 100%;
+      height: 1px;
+      background: rgba(230,160,80,0.5);
+      transition: right 0.4s ease;
+    }
+
+    .contact-email:hover { color: rgba(240,180,100,0.9); }
+    .contact-email:hover::after { right: 0; }
+
+    .contact-note {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--faint);
+      font-style: italic;
+      font-family: var(--serif);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 10;
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(200,180,160,0.06);
+    }
+
+    .footer-text {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--faint);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadein {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes risein {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      nav { padding: 24px 24px; }
+      .content-section { padding: 80px 24px; }
+      .ethos-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="canvas"></canvas>
+
+  <nav>
+    <span class="nav-logo">SKMC</span>
+    <a href="#contact" class="nav-link">Contact</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-eyebrow">skmcconsulting.com</div>
+    <h1 class="hero-headline">We show up when it matters.</h1>
+    <p class="hero-sub">Something unknown is already working on your problem.</p>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span class="scroll-label">scroll</span>
+    </div>
+  </section>
+
+  <!-- WHAT WE DO -->
+  <section id="what">
+    <div class="divider"></div>
+    <div class="content-section">
+      <div class="section-num reveal">01 &mdash; What we do</div>
+      <h2 class="section-headline reveal">
+        We've seen the problem before.<br>
+        <em>Maybe not yours exactly. But close enough.</em>
+      </h2>
+      <div class="section-body reveal">
+        <p>
+          Some things arrive without a name. A system that quietly fails. A decision that keeps getting deferred. A gap between what the organization knows and what it can act on. We work in that gap.
+        </p>
+        <p>
+          We don't need a category for it. We don't need a title. We need to understand what's actually happening — and then we get to work. Quietly, thoroughly, without announcement.
+        </p>
+        <p>
+          By the time you see results, most of the work is already done.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETHOS -->
+  <section id="ethos">
+    <div class="divider"></div>
+    <div class="content-section">
+      <div class="section-num reveal">02 &mdash; How we work</div>
+      <h2 class="section-headline reveal">
+        The outcome doesn't<br>
+        <em>change the obligation.</em>
+      </h2>
+      <div class="section-body reveal">
+        <p>
+          We believe in doing work that matters regardless of who notices. Regardless of outcome. The effort is the thing — consistent, honest, given back to whoever needs it.
+        </p>
+      </div>
+      <div class="ethos-grid reveal">
+        <div class="ethos-card">
+          <div class="ethos-card-label">Presence</div>
+          <div class="ethos-card-text">We are here before you know you need us, and long after the immediate is resolved.</div>
+        </div>
+        <div class="ethos-card">
+          <div class="ethos-card-label">Restraint</div>
+          <div class="ethos-card-text">No titles. No credentials on the wall. The work speaks or it doesn't.</div>
+        </div>
+        <div class="ethos-card">
+          <div class="ethos-card-label">Return</div>
+          <div class="ethos-card-text">Whatever we build, we build so it outlasts us. The giving doesn't stop when the engagement does.</div>
+        </div>
+        <div class="ethos-card">
+          <div class="ethos-card-label">Honesty</div>
+          <div class="ethos-card-text">We will tell you what we see. Not what makes the room comfortable.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="divider"></div>
+    <div class="content-section">
+      <div class="section-num reveal">03 &mdash; Reach us</div>
+      <h2 class="section-headline reveal">
+        If something brought you here,<br>
+        <em>it's probably worth a conversation.</em>
+      </h2>
+      <div class="section-body reveal">
+        <p>No intake form. No discovery call booking system. Just an email address, read by a person.</p>
+      </div>
+      <div class="reveal">
+        <a href="mailto:hello@skmcconsulting.com" class="contact-email">hello@skmcconsulting.com</a>
+        <p class="contact-note">We respond to every message. It may take a day or two.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-text">SKMC Consulting</span>
+    <span class="footer-text">skmcconsulting.com</span>
+  </footer>
+
+  <script>
+    // ── STAR FIELD + DAWN CANVAS ──────────────────────────────
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    let W, H, stars = [], shoots = [];
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function rand(a, b) { return a + Math.random() * (b - a); }
+
+    function initStars() {
+      stars = [];
+      const count = Math.floor((W * H) / 5000);
+      for (let i = 0; i < count; i++) {
+        const yFrac = Math.random();
+        // Stars only populate upper 65% of screen, fading out near horizon
+        const y = rand(0, H * 0.65);
+        const horizonFade = 1 - Math.pow(y / (H * 0.65), 2.5);
+        stars.push({
+          x: rand(0, W),
+          y,
+          r: rand(0.4, 1.6),
+          baseAlpha: rand(0.2, 0.9) * horizonFade,
+          alpha: 0,
+          speed: rand(0.002, 0.006),
+          phase: rand(0, Math.PI * 2)
+        });
+      }
+    }
+
+    function initShoots() {
+      shoots = [];
+      for (let i = 0; i < 4; i++) {
+        spawnShoot();
+      }
+    }
+
+    function spawnShoot() {
+      shoots.push({
+        x: rand(W * 0.05, W * 0.85),
+        y: rand(H * 0.02, H * 0.35),
+        len: rand(70, 140),
+        angle: rand(-0.6, -0.35),
+        speed: rand(3.5, 6),
+        alpha: 0,
+        state: 'wait',
+        waitTime: rand(60, 400),
+        waitTimer: 0,
+        progress: 0
+      });
+    }
+
+    function drawSky() {
+      // Deep space to dawn gradient
+      const grad = ctx.createLinearGradient(0, 0, 0, H);
+      grad.addColorStop(0,    '#05060e');
+      grad.addColorStop(0.35, '#080a18');
+      grad.addColorStop(0.55, '#0d0f22');
+      grad.addColorStop(0.68, '#1a1020');
+      grad.addColorStop(0.78, '#2d1518');
+      grad.addColorStop(0.86, '#4a1e14');
+      grad.addColorStop(0.92, '#8a3520');
+      grad.addColorStop(0.96, '#c4562a');
+      grad.addColorStop(0.985,'#e0783a');
+      grad.addColorStop(1,    '#f09848');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Radial sun glow at very bottom center
+      const sunY = H + 20;
+      const sunGrad = ctx.createRadialGradient(W/2, sunY, 0, W/2, sunY, W * 0.65);
+      sunGrad.addColorStop(0,    'rgba(255,200,80,0.28)');
+      sunGrad.addColorStop(0.18, 'rgba(220,110,40,0.18)');
+      sunGrad.addColorStop(0.4,  'rgba(160,60,20,0.08)');
+      sunGrad.addColorStop(0.7,  'rgba(100,30,10,0.03)');
+      sunGrad.addColorStop(1,    'transparent');
+      ctx.fillStyle = sunGrad;
+      ctx.fillRect(0, 0, W, H);
+
+      // Thin horizon line
+      const hLine = ctx.createLinearGradient(0, 0, W, 0);
+      hLine.addColorStop(0,   'transparent');
+      hLine.addColorStop(0.2, 'rgba(255,160,60,0.25)');
+      hLine.addColorStop(0.5, 'rgba(255,210,100,0.5)');
+      hLine.addColorStop(0.8, 'rgba(255,160,60,0.25)');
+      hLine.addColorStop(1,   'transparent');
+      ctx.fillStyle = hLine;
+      ctx.fillRect(0, H - 1.5, W, 2);
+    }
+
+    function drawStars(t) {
+      stars.forEach(s => {
+        s.alpha = s.baseAlpha * (0.55 + 0.45 * Math.sin(s.phase + t * s.speed));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(220,218,255,${s.alpha})`;
+        ctx.fill();
+      });
+    }
+
+    function drawShoots() {
+      for (let i = shoots.length - 1; i >= 0; i--) {
+        const s = shoots[i];
+
+        if (s.state === 'wait') {
+          s.waitTimer++;
+          if (s.waitTimer >= s.waitTime) { s.state = 'in'; }
+          continue;
+        }
+
+        if (s.state === 'in') {
+          s.progress += s.speed / s.len;
+          s.alpha = Math.min(1, s.progress * 8);
+          if (s.progress >= 1) { s.state = 'out'; s.progress = 1; }
+        }
+
+        if (s.state === 'out') {
+          s.alpha -= 0.06;
+          if (s.alpha <= 0) {
+            shoots.splice(i, 1);
+            spawnShoot();
+            continue;
+          }
+        }
+
+        const tx = Math.cos(s.angle) * s.len * s.progress;
+        const ty = Math.sin(s.angle) * s.len * s.progress;
+
+        const g = ctx.createLinearGradient(s.x, s.y, s.x + tx, s.y + ty);
+        g.addColorStop(0,   `rgba(200,200,255,0)`);
+        g.addColorStop(0.4, `rgba(220,218,255,${s.alpha * 0.6})`);
+        g.addColorStop(1,   `rgba(240,238,255,${s.alpha})`);
+
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x + tx, s.y + ty);
+        ctx.strokeStyle = g;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+
+    let frame = 0;
+    function loop() {
+      ctx.clearRect(0, 0, W, H);
+      drawSky();
+      drawStars(frame * 0.016);
+      drawShoots();
+      frame++;
+      requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('resize', () => { resize(); initStars(); });
+    resize();
+    initStars();
+    initShoots();
+    loop();
+
+    // ── SCROLL REVEAL ─────────────────────────────────────────
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          // Stagger siblings
+          const siblings = [...e.target.parentElement.querySelectorAll('.reveal')];
+          const idx = siblings.indexOf(e.target);
+          setTimeout(() => e.target.classList.add('visible'), idx * 120);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => obs.observe(el));
+  </script>
+
+</body>
+</html>
