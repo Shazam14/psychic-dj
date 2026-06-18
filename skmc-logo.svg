@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="SKMC Consulting">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d0f22"/>
+      <stop offset="1" stop-color="#05060e"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4a24f"/>
+      <stop offset="0.55" stop-color="#e8843a"/>
+      <stop offset="1" stop-color="#c4562a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Self-contained badge so it reads on any login-page background -->
+  <rect x="0" y="0" width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect x="6" y="6" width="500" height="500" rx="106" fill="none" stroke="#e8843a" stroke-opacity="0.14" stroke-width="2"/>
+
+  <!-- The "we show up" beacon: a present signal, pulsing outward -->
+  <g transform="translate(256,190)" fill="none" stroke="url(#amber)" stroke-linecap="round">
+    <circle r="128" stroke-opacity="0.13" stroke-width="6"/>
+    <circle r="92"  stroke-opacity="0.30" stroke-width="6"/>
+    <circle r="58"  stroke-opacity="0.62" stroke-width="7"/>
+  </g>
+  <circle cx="256" cy="190" r="23" fill="url(#amber)"/>
+
+  <!-- Wordmark, echoing the site's tracked-uppercase nav logo -->
+  <text x="256" y="372" text-anchor="middle"
+        font-family="Barlow, 'Liberation Sans', 'DejaVu Sans', Arial, sans-serif"
+        font-size="104" font-weight="700" letter-spacing="16" fill="#ece9ff">SKMC</text>
+  <text x="262" y="416" text-anchor="middle"
+        font-family="Barlow, 'Liberation Sans', 'DejaVu Sans', Arial, sans-serif"
+        font-size="25" font-weight="500" letter-spacing="13" fill="#e8843a" fill-opacity="0.92">CONSULTING</text>
+</svg>
