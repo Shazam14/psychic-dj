@@ -250,6 +250,37 @@
       color: rgba(220,210,235,0.7);
     }
 
+    /* ── WORK LIST ── */
+    .work-list {
+      margin-top: 48px;
+      list-style: none;
+    }
+
+    .work-list li {
+      position: relative;
+      padding: 0 0 22px 28px;
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1.55;
+      color: rgba(220,210,235,0.7);
+    }
+
+    .work-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: rgba(230,160,80,0.45);
+    }
+
+    .work-note {
+      margin-top: 20px;
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--faint);
+    }
+
     /* ── CONTACT ── */
     #contact .content-section {
       padding-bottom: 160px;
@@ -416,11 +447,35 @@
     </div>
   </section>
 
+  <!-- WORK -->
+  <section id="work">
+    <div class="divider"></div>
+    <div class="content-section">
+      <div class="section-num reveal">03 &mdash; What we've been called into</div>
+      <h2 class="section-headline reveal">
+        We don't name clients.<br>
+        <em>This is the work.</em>
+      </h2>
+      <ul class="work-list reveal">
+        <li>A school running its records on paper and goodwill. We built the portal it should have had a decade earlier.</li>
+        <li>A hotel paying commission on guests who already knew its name. Now they book direct.</li>
+        <li>A firm that needed to know who it was actually dealing with, and whether its own systems could be trusted. Due diligence first, then defences.</li>
+        <li>An operation that could not answer, on any given morning, what it actually had in stock. We advised on the fix and stepped back.</li>
+        <li>A currency desk running its day on spreadsheets emailed between people. Now it runs on one screen, live.</li>
+        <li>A travel business whose best asset was a reputation nobody could find online.</li>
+        <li>A venue growing faster than its booking process could survive.</li>
+        <li>A healthcare group generating more interest than it had any system to catch.</li>
+        <li>A coffee house losing its morning to its own queue. The order now arrives before the customer does.</li>
+      </ul>
+      <p class="work-note reveal">Nine engagements.</p>
+    </div>
+  </section>
+
   <!-- CONTACT -->
   <section id="contact">
     <div class="divider"></div>
     <div class="content-section">
-      <div class="section-num reveal">03 &mdash; Reach us</div>
+      <div class="section-num reveal">04 &mdash; Reach us</div>
       <h2 class="section-headline reveal">
         If something brought you here,<br>
         <em>it's probably worth a conversation.</em>
